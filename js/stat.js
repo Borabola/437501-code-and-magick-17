@@ -14,8 +14,12 @@ var barBlue = 1;
 var GAP = 50;
 var YOUR_NAME = 'Вы';
 
-var BLACK = '#000';
-var RED = 'rgba(255, 0, 0, 1)';
+var COLORS = {
+  BLACK: '#000',
+  RED: 'rgba(255, 0, 0, 1)',
+  WHITE: '#ffffff',
+  LIGHT_GREY: 'rgba(0, 0, 0, 0.7)'
+};
 
 var renderCloud = function (ctx, x, y, color) {
   ctx.fillStyle = color;
@@ -56,11 +60,11 @@ var getRandomIntInclusive = function (minOpacity, maxOpacity) {
 };
 
 window.renderStatistics = function (ctx, names, times) {
-  renderCloud(ctx, CLOUD_START_X + CLOUD_GAP, CLOUD_START_Y + CLOUD_GAP, 'rgba(0, 0, 0, 0.7)');
-  renderCloud(ctx, CLOUD_START_X, CLOUD_START_Y, '#ffffff');
+  renderCloud(ctx, CLOUD_START_X + CLOUD_GAP, CLOUD_START_Y + CLOUD_GAP, COLORS.LIGHT_GREY);
+  renderCloud(ctx, CLOUD_START_X, CLOUD_START_Y, COLORS.WHITE);
 
   var writeText = function (text, x, y) {
-    ctx.fillStyle = BLACK;
+    ctx.fillStyle = COLORS.BLACK;
     ctx.font = DEFAULT_FONT;
     ctx.textBaseline = 'hanging';
     ctx.fillText(text, x, y);
@@ -82,7 +86,7 @@ window.renderStatistics = function (ctx, names, times) {
 
     var drawBar = function (x, y, width, height) {
       if (names[i] === YOUR_NAME) {
-        var barColor = RED;
+        var barColor = COLORS.RED;
       } else {
         barOpacity = getRandomIntInclusive(1, 10) / 10;
         barBlue = getRandomIntInclusive(60, 255);
