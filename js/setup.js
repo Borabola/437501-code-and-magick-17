@@ -77,10 +77,8 @@ function renderHero(hero) {
 }
 
 /**
- * функция берет необходимое колическтво героев
+ * функция берет необходимое количество героев, добавляет фрагмент описания героя из массива объектов указанное кол-во раз
  * @param {number} count
- * @param {[ArrWizardElement]}
- * @return {Node} Element DOM элемент, представляющий список героев
  */
 function renderHeroes(count) {
   var fragment = document.createDocumentFragment();
