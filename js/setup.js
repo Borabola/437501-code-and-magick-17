@@ -1,18 +1,24 @@
 'use strict';
 var HERO_NAMES = ['Иван', 'Хуан', 'Себастьян', 'Мария', 'Кристоф', 'Виктор', 'Юлия', 'Люпита', 'Вашингтон'];
 var HERO_SURNAMES = ['да Марья', 'Верон', 'Мирабелла', 'Вальц', 'Онопко', 'Топольницкая', 'Нионго', 'Ирвинг'];
-var HERO_COAT_COLOR = ['rgb(101, 137, 164)', 'rgb(241, 43, 107)', 'rgb(146, 100, 161)', 'rgb(56, 159, 117)', 'rgb(215, 210, 55)', 'rgb(0, 0, 0)'];
-var HERO_EYES_COLOR = ['black', 'red', 'blue', 'yellow', 'green'];
+var HERO_COAT_COLORS = ['rgb(101, 137, 164)', 'rgb(241, 43, 107)', 'rgb(146, 100, 161)', 'rgb(56, 159, 117)', 'rgb(215, 210, 55)', 'rgb(0, 0, 0)'];
+var HERO_EYES_COLORS = ['black', 'red', 'blue', 'yellow', 'green'];
 var HERO_COUNT = 4;
 
 var userDialog = document.querySelector('.setup');
-userDialog.classList.remove('hidden');
 var similarWizardTemplate = document.querySelector('#similar-wizard-template')
   .content
   .querySelector('.setup-similar-item');
 var similarListElement = userDialog.querySelector('.setup-similar-list');
 
-
+/**
+ * Функция показывает окно героя и список возможных героев
+ */
+function setup() {
+  userDialog.classList.remove('hidden');
+  document.querySelector('.setup-similar').classList.remove('hidden');
+}
+setup();
 /**
  * Функция нахождения случайного элемента массива
  * @param {Arr} arr
@@ -45,14 +51,14 @@ function generateHero(firstName, lastName, coatColor, eyesColor) {
 function generateRandomHero() {
   var hero = generateHero(getRandomElement(HERO_NAMES),
       getRandomElement(HERO_SURNAMES),
-      getRandomElement(HERO_COAT_COLOR),
-      getRandomElement(HERO_EYES_COLOR));
+      getRandomElement(HERO_COAT_COLORS),
+      getRandomElement(HERO_EYES_COLORS));
   return hero;
 }
 
 /**
  * @param {number} count количество героев, которое надо сгенерировать
- * @return {Hero[]}
+ * @return {Heroes[]}
  */
 function generateHeroes(count) {
   var heroes = [];
@@ -61,7 +67,7 @@ function generateHeroes(count) {
   }
   return heroes;
 }
-var heroes = generateHeroes(HERO_COUNT);
+
 
 /**
  * функция берет объект героя и создает разметку героя
@@ -81,6 +87,7 @@ function renderHero(hero) {
  * @param {number} count
  */
 function renderHeroes(count) {
+  var heroes = generateHeroes(HERO_COUNT);
   var fragment = document.createDocumentFragment();
   for (var i = 0; i < count; i++) {
     fragment.appendChild(renderHero(heroes[i]));
@@ -89,5 +96,5 @@ function renderHeroes(count) {
 }
 
 renderHeroes(HERO_COUNT);
-document.querySelector('.setup-similar').classList.remove('hidden');
+
 
