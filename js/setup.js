@@ -3,6 +3,7 @@ var HERO_NAMES = ['Иван', 'Хуан', 'Себастьян', 'Мария', '�
 var HERO_SURNAMES = ['да Марья', 'Верон', 'Мирабелла', 'Вальц', 'Онопко', 'Топольницкая', 'Нионго', 'Ирвинг'];
 var HERO_COAT_COLORS = ['rgb(101, 137, 164)', 'rgb(241, 43, 107)', 'rgb(146, 100, 161)', 'rgb(56, 159, 117)', 'rgb(215, 210, 55)', 'rgb(0, 0, 0)'];
 var HERO_EYES_COLORS = ['black', 'red', 'blue', 'yellow', 'green'];
+var HERO_FIREBALLS_COLORS = ['#ee4830', '#30a8ee', '#5ce6c0', '#e848d5', '#e6e848'];
 var HERO_COUNT = 4;
 
 var userDialog = document.querySelector('.setup');
@@ -10,15 +11,77 @@ var similarWizardTemplate = document.querySelector('#similar-wizard-template')
   .content
   .querySelector('.setup-similar-item');
 var similarListElement = userDialog.querySelector('.setup-similar-list');
+var userDialogOpen = document.querySelector('.setup-open');
+var userDialogClose = userDialog.querySelector('.setup-close');
+var userName = userDialog.querySelector('.setup-user-name');/* или('.setup-user-name')  '[name = username]'*/
+var wizardCoat = userDialog.querySelector('.wizard-coat');
+var wizardCoatInput = userDialog.querySelector('[name = coat-color]');
+var wizardEyes = userDialog.querySelector('.wizard-eyes');
+var wizardEyesInput = userDialog.querySelector('[name = eyes-color]');
+var wizardFireballs = userDialog.querySelector('.setup-fireball-wrap');
+var wizardFireballsInput = userDialog.querySelector('[name = fireball-color]');
 
 /**
- * Функция показывает окно героя и список возможных героев
+ * Функция показывает и скрывает окно героя и список возможных героев
  */
+
 function setup() {
-  userDialog.classList.remove('hidden');
+
+
+  var onPopupEscPress = function (evt) {
+    if (evt.key === 'Escape' || evt.key === 'Esc') {
+      closePopup();
+    }
+  };
+
+  /* Не получается */
+  userName.addEventListener('focus', function () {
+    document.removeEventListener('keydown', onPopupEscPress);
+  });
+
+  userName.addEventListener('blur', function () {
+    document.addEventListener('keydown', onPopupEscPress);
+  });
+
+  var openPopup = function () {
+    userDialog.classList.remove('hidden');
+
+    document.addEventListener('keydown', function (evt) {
+      if (evt.key === 'Escape' || evt.key === 'Esc') {
+        userDialog.classList.add('hidden');
+      }
+    });
+  };
+
+  var closePopup = function () {
+    userDialog.classList.add('hidden');
+    document.removeEventListener('keydown', onPopupEscPress);
+  };
+
+  userDialogOpen.addEventListener('click', function () {
+    openPopup();
+  });
+
+
+  userDialogOpen.addEventListener('keydown', function (evt) {
+    if (evt.key === 'Enter') {
+      openPopup();
+    }
+  });
+
+  userDialogClose.addEventListener('click', function () {
+    closePopup();
+  });
+
+  userDialog.addEventListener('keydown', function (evt) {
+    if (evt.key === 'Enter') {
+      closePopup();
+    }
+  });
+
   document.querySelector('.setup-similar').classList.remove('hidden');
 }
-setup();
+
 /**
  * Функция нахождения случайного элемента массива
  * @param {Arr} arr
@@ -28,6 +91,7 @@ function getRandomElement(arr) {
   var randIndex = Math.floor(Math.random() * arr.length);
   return arr[randIndex];
 }
+
 /**
  *
  * @param {string} firstName
@@ -46,7 +110,12 @@ function generateHero(firstName, lastName, coatColor, eyesColor) {
 }
 
 /**
- * @return {Object} герой со случайным именем и фамилие
+ *  @return {
+ * {fullName: string,
+ *  coatColor: string,
+ *  eyesColor: string,
+ * }
+ * } герой со случайным именем и фамилией
  */
 function generateRandomHero() {
   var hero = generateHero(getRandomElement(HERO_NAMES),
@@ -58,7 +127,12 @@ function generateRandomHero() {
 
 /**
  * @param {number} count количество героев, которое надо сгенерировать
- * @return {Heroes[]}
+ * @return {
+ * {fullName: string,
+ *  coatColor: string,
+ *  eyesColor: string,
+ * }[]
+   }
  */
 function generateHeroes(count) {
   var heroes = [];
@@ -95,6 +169,25 @@ function renderHeroes(count) {
   similarListElement.appendChild(fragment);
 }
 
-renderHeroes(HERO_COUNT);
+wizardCoat.addEventListener('click', function () {
+  /* setHeroElementColor(wizardCoat, HERO_COAT_COLORS); */
+  var fillColor = getRandomElement(HERO_COAT_COLORS);
+  wizardCoat.style.fill = fillColor;
+  wizardCoatInput.value = fillColor;
+});
 
+wizardEyes.addEventListener('click', function () {
+  var fillColor = getRandomElement(HERO_EYES_COLORS);
+  wizardEyes.style.fill = fillColor;
+  wizardEyesInput.value = fillColor;
+});
+
+wizardFireballs.addEventListener('click', function () {
+  var fireballsBackgroundColor = getRandomElement(HERO_FIREBALLS_COLORS);
+  wizardFireballs.style.backgroundColor = fireballsBackgroundColor;
+  wizardFireballsInput.value = fireballsBackgroundColor;
+});
+
+setup();
+renderHeroes(HERO_COUNT);
 
