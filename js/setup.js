@@ -8,30 +8,35 @@ var HERO_COUNT = 4;
 var ESC_KEYCODE = 27;
 var ENTER_KEYCODE = 13;
 
-var userDialog = document.querySelector('.setup');
+window.userDialog = document.querySelector('.setup');
 var similarWizardTemplate = document.querySelector('#similar-wizard-template')
   .content
   .querySelector('.setup-similar-item');
-var similarListElement = userDialog.querySelector('.setup-similar-list');
+var similarListElement = window.userDialog.querySelector('.setup-similar-list');
 var userDialogOpen = document.querySelector('.setup-open');
-var userDialogClose = userDialog.querySelector('.setup-close');
-var userName = userDialog.querySelector('.setup-user-name');
-var wizardCoat = userDialog.querySelector('.wizard-coat');
-var wizardCoatInput = userDialog.querySelector('[name = coat-color]');
-var wizardEyes = userDialog.querySelector('.wizard-eyes');
-var wizardEyesInput = userDialog.querySelector('[name = eyes-color]');
-var wizardFireballs = userDialog.querySelector('.setup-fireball-wrap');
-var wizardFireballsInput = userDialog.querySelector('[name = fireball-color]');
+var userDialogClose = window.userDialog.querySelector('.setup-close');
+var userName = window.userDialog.querySelector('.setup-user-name');
+var wizardCoat = window.userDialog.querySelector('.wizard-coat');
+var wizardCoatInput = window.userDialog.querySelector('[name = coat-color]');
+var wizardEyes = window.userDialog.querySelector('.wizard-eyes');
+var wizardEyesInput = window.userDialog.querySelector('[name = eyes-color]');
+var wizardFireballs = window.userDialog.querySelector('.setup-fireball-wrap');
+var wizardFireballsInput = window.userDialog.querySelector('[name = fireball-color]');
 
+function resetStyle() {
+  window.userDialog.style.top = '';
+  window.userDialog.style.left = '';
+}
 
 var openPopup = function () {
-  userDialog.classList.remove('hidden');
+  window.userDialog.classList.remove('hidden');
   document.addEventListener('keydown', onPopupEscPress);
 };
 
 var closePopup = function () {
-  userDialog.classList.add('hidden');
+  window.userDialog.classList.add('hidden');
   document.removeEventListener('keydown', onPopupEscPress);
+  resetStyle();
 };
 
 /* Пока .keyCode имеет почти полную поддержку, но он устаревает и к использованию не рекомендуется.
@@ -70,7 +75,7 @@ function setup() {
   });
 
   /* Использование evt.key и  evt.keyCode описано выше для onPopupEscPress */
-  userDialog.addEventListener('keydown', function (evt) {
+  window.userDialog.addEventListener('keydown', function (evt) {
     if (evt.key === 'Enter' || evt.keyCode === ENTER_KEYCODE) {
       closePopup();
     }
@@ -190,7 +195,6 @@ function setHeroElementColor(element, elementInput, colors, isfill, isbgColor) {
   }
   elementInput.value = selectedColor;
 }
-
 
 setup();
 renderHeroes(HERO_COUNT);
